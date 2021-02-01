@@ -1,11 +1,13 @@
 /*
   USAGE:
-    ./create filename [author] [date]
+    ./create filename [date]
 */
 
-#include <fstream>
 #include <cstdio>
 #include <cwchar>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 
 using namespace std;
 
@@ -35,17 +37,54 @@ int main(int argc, char** argv) {
     strcat(fileName, ".cpp");
   }
 
-  // 
+  // Err if filename too long
+  if(strlen(fileName) > 32) {
+    printf("Filename too long. Max 32 characters.");
+  }
 
   // Create the file
   FILE* fout;
   fout = fopen(fileName, "w");
 
-  // Write the file
+  // Setup
   wchar_t border[] = {L'═', L'╔', L'╗', L'╝', L'╚', L'─', L'╟', L'╢'};
+
+  // Calc the width
   char width = 4 + strlen("Author: Kuba Zeligowski");
+  width = (width > (strlen(fileName) + 6)) ? width : (strlen(fileName) + 6);
+  char spacing;
+  wchar_t space[width - 3];
 
+  // Author line
+  wchar_t authorLine[width - 3];
+  spacing = width - 3 - strlen("Author:Kuba Zeligowski");
 
+  wmemset(space, L' ', spacing);
+  wcscpy(authorLine, L"Author:");
+  wcscat(authorLine, space);
+  wcscat(authorLine, L"Kuba Zeligowski");
+
+  // Date line
+  wchar_t dateLine[width - 3];
+  wchar_t date[strlen("mm/dd/yy")];
+  spacing = width - 3 - strlen("Date:mm/dd/yy");
+  time_t timer;
+  
+
+  time(&timer);
+
+  wmemset(space, L' ', spacing);
+  wcscpy(dateLine, L"Date:");
+  wcscat(dateLine, space);
+  wcscat(dateLine, date);
 
   return 0;
 }
+
+
+
+
+
+
+
+
