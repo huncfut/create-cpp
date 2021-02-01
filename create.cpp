@@ -57,26 +57,30 @@ int main(int argc, char** argv) {
 
   // Author line
   wchar_t authorLine[width - 3];
-  spacing = width - 3 - strlen("Author:Kuba Zeligowski");
+  spacing = width - 4 - strlen("Author:Kuba Zeligowski");
 
   wmemset(space, L' ', spacing);
   wcscpy(authorLine, L"Author:");
+  fwprintf(fout, L"|%ls|\r\n", space);
+  fwprintf(fout, L"|%ls|\r\n", authorLine);
   wcscat(authorLine, space);
   wcscat(authorLine, L"Kuba Zeligowski");
 
   // Date line
   wchar_t dateLine[width - 3];
-  wchar_t date[strlen("mm/dd/yy")];
-  spacing = width - 3 - strlen("Date:mm/dd/yy");
+  wchar_t date[strlen("mmm dd, YYYY")];
+  spacing = width - 4 - strlen("Date:mmm dd, YYYY");
   time_t timer;
-  
 
   time(&timer);
+  wcsftime(date, strlen("mmm dd, YYYY"), L"%b %d, %Y", localtime(&timer));
 
   wmemset(space, L' ', spacing);
   wcscpy(dateLine, L"Date:");
   wcscat(dateLine, space);
   wcscat(dateLine, date);
+
+  fwprintf(fout, L"%ls\n%ls", authorLine, dateLine);
 
   return 0;
 }
