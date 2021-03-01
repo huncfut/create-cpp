@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
   fout = fopen(fileName, "w");
 
   // Setup
-  wchar_t border[] = {L'═', L'╔', L'╗', L'╝', L'╚', L'─', L'╟', L'╢'};
+  //wchar_t border[] = {L'═', L'╔', L'╗', L'╝', L'╚', L'─', L'╟', L'╢'};
 
   // Calc the width
   char width = 4 + strlen("Author: Kuba Zeligowski");
@@ -61,19 +61,18 @@ int main(int argc, char** argv) {
 
   wmemset(space, L' ', spacing);
   wcscpy(authorLine, L"Author:");
-  fwprintf(fout, L"|%ls|\r\n", space);
-  fwprintf(fout, L"|%ls|\r\n", authorLine);
-  wcscat(authorLine, space);
+  wcsncat(authorLine, space, spacing);
   wcscat(authorLine, L"Kuba Zeligowski");
 
   // Date line
   wchar_t dateLine[width - 3];
-  wchar_t date[strlen("mmm dd, YYYY")];
+  wchar_t date[13];
   spacing = width - 4 - strlen("Date:mmm dd, YYYY");
-  time_t timer;
+  time_t timer = time(nullptr);
 
-  time(&timer);
-  wcsftime(date, strlen("mmm dd, YYYY"), L"%b %d, %Y", localtime(&timer));
+  wcsftime(date, 13, L"%b %d, %Y", localtime(&timer));
+
+  wprintf(L"Date: (%ls)\n", date);
 
   wmemset(space, L' ', spacing);
   wcscpy(dateLine, L"Date:");
